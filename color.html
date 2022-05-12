@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color-Game</title>
+    <style>
+        *{
+            box-sizing: border-box;
+        }
+        body{
+            padding: 0;
+            margin: 0;
+            background-color: lightcoral;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .outBox{
+            width: 500px;
+            height: 500px;
+            background-color: azure;
+            border-radius: 10px;
+            border: 10px solid azure;
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .box{
+            width: 50%;
+            height: 50%;
+            background-color: green;
+            border-radius: 10px;
+            border: 5px solid azure;
+        }
+        .ansBoxStyle{
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="outBox">
+        <!-- <div class="box"></div>
+        <div class="box"></div>
+        <div class="box"></div>
+        <div class="box"></div> -->
+    </div>
+
+    <script>
+        var outerBox = document.querySelector('.outBox');
+        var level = 2;
+        var cnt =0;
+        game();
+
+        function game(){
+
+            // Clear Boxes
+            outerBox.innerHTML = '';
+
+            // Gen Random Color
+            var r = Math.floor(Math.random()*256);
+            var g = Math.floor(Math.random()*256);
+            var b = Math.floor(Math.random()*256);
+            var color = `rgb(${r}, ${g}, ${b})`;
+
+            //Gen Boxes
+            var size = 100 / level;
+            var numOfBox = level**2;
+            for(var i = 0; i < numOfBox; i++){
+                outerBox.innerHTML += `<div class="box" style = "width : ${size}%; height: ${size}%; background-color: ${color};"></div>`;
+            }
+
+            //Gen Ans Box
+            var ansNum = Math.floor(Math.random()*numOfBox)+1;
+            console.log(numOfBox);
+            console.log(ansNum);
+            var ansBox = document.querySelector(`.box:nth-child(${ansNum})`);
+            ansBox.classList.add("ansBoxStyle");
+            ansBox.style.opacity = 0.5 + level * 0.05;
+            console.log(ansBox.style.opacity);
+            ansBox.addEventListener('click', function(){
+                // alert("恭喜過關！");
+                console.log("恭喜過關！");
+                cnt++;
+                if(cnt == level){
+                    level++;
+                    cnt = 0;
+                }
+                game();
+            });
+
+            var notBox = document.querySelectorAll(`.box:not(:nth-child(${ansNum}))`);
+            notBox.forEach(function(nbox, index, ary){
+                nbox.addEventListener('click', function(){
+                    alert("不是我！");
+                    console.log("不是我！");
+                });
+            });
+        }
+
+        
+
+    </script>
+</body>
+</html>
